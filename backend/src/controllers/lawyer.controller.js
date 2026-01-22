@@ -1,4 +1,5 @@
 import LawyerProfile from "../models/LawyerProfile.model.js";
+import User from "../models/User.model.js";
 
 export const getLawyerProfile = async(req, res) => {
     if(req.user.role !== "lawyer"){
@@ -21,4 +22,42 @@ export const getLawyerProfile = async(req, res) => {
         success: true,
         profile,
     })
+}
+
+export const submitLawyerOnboarding = async(req, res) => {
+    try{
+        const { barCouncilId, specialization } = req.body;
+        if(!barCouncilId){
+            return res.status(400).json({
+                success: false,
+                message: "Bar Council Id is required",
+            });
+        }
+        const existingProfile = await LawyerProfile.findOne({
+            userId: req.user._id,
+        });
+        if(existingProfile){
+            return res.status(409).json({
+                success: false,
+                message: "Onboarding already submitted",
+            });
+        }
+        const profile = await LawyerProfile.create({
+            userId: req.user._id,
+            barCouncilId,
+            specialization: specialization || [],
+            onboardingStatus: "pending",
+        });
+        res.status(201).json({
+            success: true,
+            message: "Lawyer onboarding submitted successfully",
+            profile,
+        })
+    }catch(error){
+        return res.status(500).json({
+            success: false,
+            message: "Failed to submit onboarding.",
+            error: error.message,
+        });
+    }
 }
