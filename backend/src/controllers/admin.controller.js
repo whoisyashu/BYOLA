@@ -56,6 +56,7 @@ export const approveLawyer = async(req, res)=>{
 export const rejectLawyer = async(req, res) => {
     try{
         const {lawyerProfileId} = req.params;
+        const {reason} = req.body;
 
         const profile = await LawyerProfile.findById(lawyerProfileId);
         if(!profile){
@@ -71,6 +72,7 @@ export const rejectLawyer = async(req, res) => {
             });
         }
         profile.onboardingStatus = "rejected";
+        profile.reason = reason;
         await profile.save();
 
         res.status(200).json({

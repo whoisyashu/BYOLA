@@ -22,7 +22,11 @@ const lawyerProfileSchema = new mongoose.Schema({
         type: String,
         enum:['pending', 'rejected', 'approved'],
         default: 'pending',
-    }
+    },
+    rejectionReason:{
+        type: String,
+        default: null,
+    },
 },
 {
     timestamps: true,
