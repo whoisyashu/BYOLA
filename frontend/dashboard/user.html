@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>User Dashboard - BYOLA</title>
+	<link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+	<header class="topbar">
+		<div class="topbar__brand">
+			<a href="../index.html" class="brand__link">
+				<img src="../assets/images/logo.png" alt="BYOLA Logo" class="brand__logo-img">
+			</a>
+		</div>
+		<div class="topbar__actions">
+			<button class="btn btn-ghost" onclick="LogoutService.logout();">Logout</button>
+		</div>
+	</header>
+
+	<main class="layout">
+		<section class="card user-welcome-card">
+			<div class="card__header">
+				<p class="eyebrow">Welcome to BYOLA</p>
+			</div>
+			<div class="card__body">
+				<p class="card__title">Get legal assistance from verified lawyers</p>
+				<p class="card__text">Connect with qualified legal professionals who can help you with your legal queries, cases, and advice.</p>
+			</div>
+		</section>
+
+		<section class="card quick-access-card">
+			<div class="card__header">
+				<p class="eyebrow">Quick Actions</p>
+			</div>
+			<div class="card__body">
+				<p class="card__title">Get Started</p>
+				<p class="card__text">Explore available actions and features on the platform.</p>
+				<div class="action-placeholder">
+					<p>Action buttons will appear here</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="card browse-lawyers-card">
+			<div class="card__header">
+				<p class="eyebrow">Browse Lawyers</p>
+			</div>
+			<div class="card__body">
+				<p class="card__title">Find the right lawyer</p>
+				<p class="card__text">Search and filter lawyers by practice areas, experience, and ratings.</p>
+				<div class="lawyer-browser-placeholder">
+					<p>Lawyer browser will appear here</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="card user-profile-card">
+			<div class="card__header">
+				<p class="eyebrow">Your Profile</p>
+			</div>
+			<div class="card__body profile-grid">
+				<div class="profile-field">
+					<p class="field-label">Name</p>
+					<p class="field-value" id="user-name">—</p>
+				</div>
+				<div class="profile-field">
+					<p class="field-label">Email</p>
+					<p class="field-value" id="user-email">—</p>
+				</div>
+				<div class="profile-field">
+					<p class="field-label">Role</p>
+					<p class="field-value" id="user-role">—</p>
+				</div>
+				<div class="profile-field">
+					<p class="field-label">Member Since</p>
+					<p class="field-value" id="user-member-since">—</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- Authentication and Guard Scripts -->
+	<script src="../js/config.js"></script>
+	<script src="../js/auth.js"></script>
+	<script src="../js/guard.js"></script>
+	<script src="../js/logout.js"></script>
+	<script src="../js/dashboard-data.js"></script>
+
+	<script>
+		// Verify authentication before displaying dashboard
+		document.addEventListener('DOMContentLoaded', () => {
+			RouteGuard.requireRole(CONFIG.ROLES.USER);
+			DashboardData.populateUserDashboard();
+		});
+	</script>
+</body>
+</html>

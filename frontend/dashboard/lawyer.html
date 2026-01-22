@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lawyer Dashboard - BYOLA</title>
+	<link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+	<header class="topbar">
+		<div class="topbar__brand">
+			<a href="../index.html" class="brand__link">
+				<img src="../assets/images/logo.png" alt="BYOLA Logo" class="brand__logo-img">
+			</a>
+		</div>
+		<div class="topbar__actions">
+			<button class="btn btn-ghost" onclick="LogoutService.logout();">Logout</button>
+		</div>
+	</header>
+
+	<main class="layout">
+		<section class="card status-card">
+			<div class="card__header">
+				<p class="eyebrow">Onboarding Status</p>
+				<span class="status-badge status-badge--pending" id="lawyer-status-badge">Pending Review</span>
+			</div>
+			<div class="card__body">
+				<p class="card__title">Your profile is under review</p>
+				<p class="card__text">Our admin team is validating your credentials and documents. You will receive an update soon.</p>
+				<ul class="status-list">
+					<li><strong>Status:</strong> <span id="lawyer-status">Pending</span></li>
+					<li><strong>Bar Council ID:</strong> <span id="lawyer-license">—</span></li>
+					<li><strong>Practice areas:</strong> <span id="lawyer-practice">—</span></li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="card rejection-card">
+			<div class="card__header">
+				<p class="eyebrow">Rejection Reason</p>
+				<span class="status-badge status-badge--rejected">Rejected</span>
+			</div>
+			<div class="card__body">
+				<p class="card__title">Action needed</p>
+				<p class="card__text" id="lawyer-rejection">—</p>
+				<div class="rejection-steps">
+					<p class="rejection-steps__title">Next steps</p>
+					<ol class="rejection-steps__list">
+						<li>Obtain the stamped license document.</li>
+						<li>Upload the updated file in the onboarding section.</li>
+						<li>Confirm your practice areas match the provided license.</li>
+					</ol>
+				</div>
+			</div>
+		</section>
+
+		<section class="card profile-card">
+			<div class="card__header">
+				<p class="eyebrow">Profile Summary</p>
+			</div>
+			<div class="card__body profile-grid">
+				<div class="profile-field">
+					<p class="field-label">Name</p>
+					<p class="field-value" id="lawyer-name">—</p>
+				</div>
+				<div class="profile-field">
+					<p class="field-label">Email</p>
+					<p class="field-value" id="lawyer-email">—</p>
+				</div>
+				<div class="profile-field">
+					<p class="field-label">Role</p>
+					<p class="field-value" id="lawyer-role">—</p>
+				</div>
+				<div class="profile-field">
+					<p class="field-label">Member Since</p>
+					<p class="field-value" id="lawyer-member-since">—</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- Authentication and Guard Scripts -->
+	<script src="../js/config.js"></script>
+	<script src="../js/auth.js"></script>
+	<script src="../js/guard.js"></script>
+	<script src="../js/logout.js"></script>
+		<script src="../js/dashboard-data.js"></script>
+
+	<script>
+		// Verify authentication before displaying dashboard
+		document.addEventListener('DOMContentLoaded', () => {
+			RouteGuard.requireRole(CONFIG.ROLES.LAWYER);
+				DashboardData.populateLawyerDashboard();
+		});
+	</script>
+</body>
+</html>

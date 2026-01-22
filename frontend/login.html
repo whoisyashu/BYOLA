@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BYOLA</title>
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Back to Home Link -->
+        <a href="index.html" class="back-link">← Back to Home</a>
+
+        <!-- Login Card -->
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="assets/images/logo.png" alt="BYOLA Logo" class="auth-logo-img">
+                <p class="auth-subtitle">Be Your Own Legal Advisor</p>
+            </div>
+
+            <form class="auth-form" id="loginForm">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email" 
+                        required
+                    >
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Enter your password" 
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            class="password-toggle" 
+                            id="passwordToggle" 
+                            aria-label="Toggle password visibility"
+                        >
+                            <!-- Eye Icon (visible) -->
+                            <svg class="toggle-icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <!-- Eye Off Icon (hidden) -->
+                            <svg class="toggle-icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="form-group checkbox-group">
+                    <input 
+                        type="checkbox" 
+                        id="remember" 
+                        name="remember" 
+                        class="form-checkbox"
+                    >
+                    <label for="remember" class="checkbox-label">Remember me</label>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="auth-footer">
+                <p class="footer-text">
+                    Don't have an account? 
+                    <a href="register.html" class="footer-link">Sign up here</a>
+                </p>
+                <a href="#" class="footer-link forgot-password">Forgot password?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+
+    <script>
+        // Password Toggle
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordInput = document.getElementById('password');
+
+        passwordToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('visible');
+        });
+
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            try {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                const result = await authService.login(email, password);
+                
+                // Redirect to appropriate dashboard based on role
+                const role = result.user.role;
+                RouteGuard.redirectToDashboard(role);
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please check your credentials.');
+            }
+        });
+    </script>
+</body>
+</html>
